@@ -73,7 +73,7 @@ Bu proje, noter onaylı belgelerin güvenli, şeffaf ve merkeziyetsiz bir şekil
   - Batch işleme desteği
   - Ölçeklenebilir AI servisleri
 
-## 🛠️ Teknoloji Yığını
+## 🛠️ Teknolojiler
 
 - **Backend:** Java & Spring Boot
 - **Frontend:** React & Material UI

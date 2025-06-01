@@ -1,0 +1,97 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8081
+    networks:
+      - blockchain-net
+    depends_on:
+      - user-node
+      - noter-node
+      - admin-node
+
+  user-node:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=user
+      - SERVER_PORT=8081
+      - NODE_TYPE=USER
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/noterdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - blockchain-net
+    volumes:
+      - ~/.m2:/root/.m2
+    depends_on:
+      - postgres
+
+  noter-node:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=noter
+      - SERVER_PORT=8082
+      - NODE_TYPE=NOTER
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/noterdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - blockchain-net
+    volumes:
+      - ~/.m2:/root/.m2
+    depends_on:
+      - postgres
+
+  admin-node:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=admin
+      - SERVER_PORT=8083
+      - NODE_TYPE=ADMIN
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/noterdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - blockchain-net
+    volumes:
+      - ~/.m2:/root/.m2
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=noterdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - blockchain-net
+
+networks:
+  blockchain-net:
+    driver: bridge
+
+volumes:
+  postgres-data: 

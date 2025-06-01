@@ -93,8 +93,8 @@ Bu proje, noter onaylı belgelerin güvenli, şeffaf ve merkeziyetsiz bir şekil
 
 1. **Projeyi Klonlama**
 ```bash
-git clone [PROJE_REPO_URL]
-cd [PROJE_KLASOR_ADI]
+git clone https://github.com/Baranll0/Notarized-Document-Verification-System.git
+cd Notarized-Document-Verification-System
 ```
 
 2. **Docker Servislerini Başlatma**
